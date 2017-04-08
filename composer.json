@@ -1,0 +1,21 @@
+{
+    "name": "ptrtn/auto-subtitles",
+    "description": "Automaticly fetch subtitles from multiple sources for a given video file",
+    "type": "project",
+    "require": {
+        "silex/silex": "^2.0",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "authors": [
+        {
+            "name": "Peter Ton",
+            "email": "mail@peterton.nl"
+        }
+    ],
+    "scripts": {
+        "test": "vendor/bin/phpunit tests"
+    }
+}
