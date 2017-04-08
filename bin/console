@@ -12,9 +12,10 @@ $app->register(
     array(
         'console.name' => 'AutoSubtitles',
         'console.version' => '0.1.0',
-        'console.project_directory' => __DIR__ . '/..'
+        'console.project_directory' => __DIR__ . '/../'
     )
 );
-$application = $app['console'];
-$application->add(new SubtitlesDownloadCommand());
-$application->run();
+$app->register(new \ServiceProviders\SubDbServiceProvider());
+$console = $app['console'];
+$console->add(new SubtitlesDownloadCommand());
+$console->run();
