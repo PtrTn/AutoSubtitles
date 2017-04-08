@@ -27,11 +27,13 @@ class SubDbServiceProvider implements ServiceProviderInterface
             return new HashGenerator();
         };
         $container[Downloader::class] = function () {
-            $httpClient = new Client(['base_uri' => 'http://api.thesubdb.com']);
+            $httpClient = new Client([
+                'base_uri' => 'http://api.thesubdb.com'
+            ]);
             return new Downloader($httpClient);
         };
         $container[Storage::class] = function () {
-            return new Storage(__DIR__ . '/../../var/downloads'); // todo move to config
+            return new Storage();
         };
         $container[Provider::class] = function () use ($container) {
             return new Provider(

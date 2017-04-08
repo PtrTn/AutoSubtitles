@@ -5,64 +5,46 @@ namespace SubtitleProviders\SubDb;
 class Storage
 {
     /**
-     * @var string
-     */
-    private $storageFolder;
-
-    /**
-     * Storage constructor.
-     * @param $storageFolder
-     */
-    public function __construct($storageFolder)
-    {
-        $this->storageFolder = $storageFolder;
-    }
-
-    /**
      * @param string $videoName
      * @return resource
      */
     public function createSubsFileByVideoName($videoName)
     {
-        $baseName = $this->getBaseName($videoName);
-        return $this->createSubtitleResource($baseName);
+        $subtitleBaseName = $this->getBaseName($videoName);
+        $storageFolder = $this->getFolder($videoName);
+        return $this->createSubtitleResource($storageFolder, $subtitleBaseName);
     }
 
     /**
-     * @param $videoName
+     * @param $videoFile
      * @return string
      */
-    private function getBaseName($videoName)
+    private function getBaseName($videoFile)
     {
-        return pathinfo($videoName, PATHINFO_FILENAME);
+        return pathinfo($videoFile, PATHINFO_FILENAME);
     }
 
     /**
-     * @param string $baseName
+     * @param $videoFile
+     * @return mixed
+     */
+    private function getFolder($videoFile)
+    {
+        return pathinfo($videoFile, PATHINFO_DIRNAME);
+    }
+
+    /**
+     * @param string $storageFolder
+     * @param string $subtitleBaseName
      * @return resource
      */
-    private function createSubtitleResource($baseName)
+    private function createSubtitleResource($storageFolder, $subtitleBaseName)
     {
-        $this->createDirIfNotExists($this->storageFolder);
-        $subsFile = $this->storageFolder . '/' . $baseName . '.srt';
+        $subsFile = $storageFolder . '/' . $subtitleBaseName . 'SubDb.srt';
         $resource = @fopen($subsFile, 'w+');
         if ($resource === false) {
             throw new \RuntimeException(sprintf('Unable to write subtitle file %s', $subsFile));
         }
         return $resource;
-    }
-
-    /**
-     * @param string $storageFolder
-     */
-    private function createDirIfNotExists($storageFolder)
-    {
-        if (is_dir($storageFolder)) {
-            return;
-        }
-        $success = @mkdir($storageFolder, 0777, true);
-        if ($success === false) {
-            throw new \RuntimeException('Unable to create storage directory');
-        }
     }
 }
