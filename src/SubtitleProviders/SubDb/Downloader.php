@@ -39,6 +39,8 @@ class Downloader
             if ($e->getResponse()->getStatusCode() === 404) {
                 throw new \RuntimeException('Subtitles not found');
             }
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Error connection to SubDb');
         }
         throw new \RuntimeException('Error connection to SubDb');
     }
