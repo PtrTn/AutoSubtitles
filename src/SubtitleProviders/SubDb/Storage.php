@@ -40,7 +40,7 @@ class Storage
      */
     private function createSubtitleResource($storageFolder, $subtitleBaseName)
     {
-        $subsFile = $storageFolder . '/' . $subtitleBaseName . 'SubDb.srt';
+        $subsFile = $storageFolder . '/' . $subtitleBaseName . '.SubDb.srt';
         $resource = @fopen($subsFile, 'w+');
         if ($resource === false) {
             throw new \RuntimeException(sprintf('Unable to write subtitle file %s', $subsFile));
