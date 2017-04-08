@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__.'/../vendor/autoload.php';
+
+use Commands\SubtitlesDownloadCommand;
+use Knp\Provider\ConsoleServiceProvider;
+
+$app = new Silex\Application();
+$app['debug'] = true;
+$app->register(
+    new ConsoleServiceProvider(),
+    array(
+        'console.name' => 'AutoSubtitles',
+        'console.version' => '0.1.0',
+        'console.project_directory' => __DIR__ . '/..'
+    )
+);
+$application = $app['console'];
+$application->add(new SubtitlesDownloadCommand());
+$application->run();
