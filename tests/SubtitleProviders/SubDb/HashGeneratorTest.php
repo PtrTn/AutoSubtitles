@@ -3,9 +3,12 @@
 namespace Tests\SubtitleProviders\SubDb;
 
 use SubtitleProviders\SubDb\HashGenerator;
+use Helpers\FixtureAware;
 
 class HashGeneratorTest extends \PHPUnit_Framework_TestCase
 {
+    use FixtureAware;
+
     /**
      * @var HashGenerator
      */
@@ -21,8 +24,8 @@ class HashGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGenerateHashForFile()
     {
-        $filePath = __DIR__ . '/../../fixtures/dexter.mp4';
-        $actualHash = $this->hashGenerator->generateForFilePath($filePath);
+        $fixturePath = $this->getFixturePathByName('dexter.mp4');
+        $actualHash = $this->hashGenerator->generateForFilePath($fixturePath);
         $expectedHash = 'ffd8d4aa68033dc03d1c8ef373b9028c';
         $this->assertEquals($expectedHash, $actualHash);
     }
