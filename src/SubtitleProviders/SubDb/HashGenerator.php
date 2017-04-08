@@ -7,7 +7,7 @@ class HashGenerator
     /**
      * The first 64kb and last 64kb of the file should be used to create a hash
      */
-    Const READSIZE = 64 * 1024;
+    const READSIZE = 64 * 1024;
 
     /**
      * @param string $filename
@@ -24,7 +24,7 @@ class HashGenerator
         }
         $size = filesize($filename);
         $offset = $size - static::READSIZE;
-        $lastBytes = file_get_contents($filename, false, null,$offset, static::READSIZE);
+        $lastBytes = file_get_contents($filename, false, null, $offset, static::READSIZE);
         if ($lastBytes === false) {
             throw new \InvalidArgumentException('Video file does not exist');
         }

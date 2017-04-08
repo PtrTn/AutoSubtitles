@@ -4,5 +4,5 @@ namespace SubtitleProviders;
 
 interface SubtitleProvider
 {
-    function downloadSubsForVideoFile($videoFilename);
+    public function downloadSubsForVideoFile($videoFilename);
 }
