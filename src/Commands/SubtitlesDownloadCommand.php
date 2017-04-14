@@ -3,7 +3,7 @@
 namespace Commands;
 
 use Knp\Command\Command;
-use SubtitleProviders\SubDb\Provider;
+use Services\SubtitleService;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,19 +27,21 @@ class SubtitlesDownloadCommand extends Command
     {
         $videoFile = $input->getArgument('video file');
         if (!is_file($videoFile)) {
-            throw new \InvalidArgumentException(sprintf('"%s" does not exist'));
+            throw new \InvalidArgumentException(sprintf('"%s" does not exist', $videoFile));
         }
-        $app = $this->getSilexApplication();
-        /** @var Provider $subDbProvider */
-        $subDbProvider = $app[Provider::class];
         $projectDir = $this->getProjectDirectory();
         $output->writeln('Looking for subtitles');
-        $success = $subDbProvider->downloadSubsForVideoFile($projectDir . $videoFile);
-        if (!$success) {
+        $app = $this->getSilexApplication();
+
+        /** @var SubtitleService $subtitleService */
+        $subtitleService = $app[SubtitleService::class];
+        $successCount = $subtitleService->downloadSubtitlesForVideoFile($projectDir . $videoFile);
+
+        if ($successCount === 0) {
             $output->writeln(sprintf('No subtitles found for "%s"', $videoFile));
             return;
         }
-        $output->writeln(sprintf('Successfully downloaded subtitles for "%s"', $videoFile));
+        $output->writeln(sprintf('Successfully downloaded %s subtitles for "%s"', $successCount, $videoFile));
         return;
     }
 }
