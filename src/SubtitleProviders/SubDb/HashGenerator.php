@@ -10,21 +10,21 @@ class HashGenerator
     const READSIZE = 64 * 1024;
 
     /**
-     * @param string $filename
+     * @param string $filePath
      * @return string
      */
-    public function generateForFilePath($filename)
+    public function generateForFilePath($filePath)
     {
-        if (!file_exists($filename)) {
+        if (!file_exists($filePath)) {
             throw new \InvalidArgumentException('Video file does not exist'); // todo domain specific exceptions
         }
-        $firstBytes = file_get_contents($filename, false, null, 0, static::READSIZE);
+        $firstBytes = file_get_contents($filePath, false, null, 0, static::READSIZE);
         if ($firstBytes === false) {
             throw new \InvalidArgumentException('Video file does not exist');
         }
-        $size = filesize($filename);
+        $size = filesize($filePath);
         $offset = $size - static::READSIZE;
-        $lastBytes = file_get_contents($filename, false, null, $offset, static::READSIZE);
+        $lastBytes = file_get_contents($filePath, false, null, $offset, static::READSIZE);
         if ($lastBytes === false) {
             throw new \InvalidArgumentException('Video file does not exist');
         }
