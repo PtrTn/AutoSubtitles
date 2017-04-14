@@ -4,18 +4,28 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Commands\SubtitlesDownloadCommand;
 use Knp\Provider\ConsoleServiceProvider;
+use Rpodwika\Silex\YamlConfigServiceProvider;
+use ServiceProviders\ApplicationServiceProvider;
+use ServiceProviders\OpenSubtitlesServiceProvider;
+use ServiceProviders\SubDbServiceProvider;
 
 $app = new Silex\Application();
 $app['debug'] = true;
 $app->register(
     new ConsoleServiceProvider(),
-    array(
+    [
         'console.name' => 'AutoSubtitles',
         'console.version' => '0.1.0',
         'console.project_directory' => __DIR__ . '/../'
-    )
+    ]
 );
-$app->register(new \ServiceProviders\SubDbServiceProvider());
+$app->register(new YamlConfigServiceProvider(
+    __DIR__ . '/../app/config.yml'
+));
+$app->register(new SubDbServiceProvider());
+$app->register(new OpenSubtitlesServiceProvider());
+$app->register(new ApplicationServiceProvider());
+
 $console = $app['console'];
 $console->add(new SubtitlesDownloadCommand());
 $console->run();

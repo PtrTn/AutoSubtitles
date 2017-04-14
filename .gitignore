@@ -1,3 +1,4 @@
 /vendor/
 /var/*
 !/var/.gitkeep
+/app/config.yml

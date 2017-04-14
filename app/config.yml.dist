@@ -1,0 +1,5 @@
+providers:
+  opensubtitles:
+    username:
+    password:
+    useragent:
