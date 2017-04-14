@@ -37,7 +37,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->getMock();
         $provider = new Provider($hashGenerator, $storage, $downloader);
-        $success = $provider->downloadSubsForVideoFile($videoFileName);
+        $success = $provider->downloadSubtitleForVideoFile($videoFileName);
         $this->assertTrue($success);
     }
 

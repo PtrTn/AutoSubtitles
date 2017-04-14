@@ -54,7 +54,7 @@ class Downloader
         $uri = http_build_query([
             'action' => 'download',
             'hash' => $hash,
-            'language' => 'en,nl'
+            'language' => 'en'
         ]);
         $query = new Uri('?' . $uri);
         $request = new Request('GET', $query, [

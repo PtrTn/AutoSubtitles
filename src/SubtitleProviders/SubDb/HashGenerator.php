@@ -16,7 +16,7 @@ class HashGenerator
     public function generateForFilePath($filePath)
     {
         if (!file_exists($filePath)) {
-            throw new \InvalidArgumentException('Video file does not exist'); // todo domain specific exceptions
+            throw new \InvalidArgumentException('Video file does not exist');
         }
         $firstBytes = file_get_contents($filePath, false, null, 0, static::READSIZE);
         if ($firstBytes === false) {
