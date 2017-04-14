@@ -6,5 +6,6 @@ Automatically download subtitles for a given video file
 
 ## Todo
 - Install instructions
-- Allow downloading of multiple subtitles at once
+- Domain specific exceptions for nicer reporting
+- Allow downloading of subtitles for multiple files at once
 - Async downloading
