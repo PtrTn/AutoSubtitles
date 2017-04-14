@@ -18,7 +18,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
     public function shouldDownloadSubtitles()
     {
         $expectedMethod = 'GET';
-        $expectedQuery = 'action=download&hash=fake-hash&language=en%2Cnl';
+        $expectedQuery = 'action=download&hash=fake-hash&language=en';
         $expectedUserAgent = 'SubDB/1.0 (AutoSubtitles/0.1; https://github.com/PtrTn/AutoSubtitles)';
 
         $historyContainer = [];
