@@ -1,5 +1,5 @@
 providers:
   opensubtitles:
-    username:
-    password:
-    useragent:
+    username: opensubtitlesusername
+    password: opensubtitlespassword
+    useragent: OSTestUserAgent
