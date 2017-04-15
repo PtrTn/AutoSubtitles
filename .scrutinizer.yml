@@ -1,0 +1,23 @@
+filter:
+    excluded_paths:
+        - 'app/*'
+        - 'tests/*'
+        - 'bin/*'
+checks:
+    php: true
+coding_style:
+    php:
+        indentation:
+            general:
+                size: 1
+        spaces:
+            around_operators:
+                concatenation: true
+build:
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit -c phpunit.xml --coverage-clover=coverage.xml'
+                coverage:
+                    file: 'coverage.xml'
+                    format: 'clover'
