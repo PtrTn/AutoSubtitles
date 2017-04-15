@@ -17,9 +17,6 @@ class HashGenerator
      */
     public function generateForFilePath($filePath)
     {
-        if (!file_exists($filePath)) {
-            throw new \InvalidArgumentException('Video file does not exist');
-        }
         $handle   = fopen($filePath, "rb");
         $fileSize = filesize($filePath);
         $hash = array(
