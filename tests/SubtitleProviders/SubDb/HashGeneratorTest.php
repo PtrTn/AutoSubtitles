@@ -37,7 +37,7 @@ class HashGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldErrorOnInvalidFile()
     {
-        $invalidFile = tempnam(__DIR__, 'fixture');
-        $this->hashGenerator->generateForFilePath($invalidFile);
+        $invalidFixture = $this->getFixturePathByName('invalid-video.mp4');
+        $this->hashGenerator->generateForFilePath($invalidFixture);
     }
 }

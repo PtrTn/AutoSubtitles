@@ -13,6 +13,21 @@ use SubtitleProviders\SubDb\Downloader;
 class DownloaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var resource
+     */
+    private $tempResource;
+
+    public function setUp()
+    {
+        $this->tempResource = tmpfile();
+    }
+
+    public function tearDown()
+    {
+        fclose($this->tempResource);
+    }
+
+    /**
      * @test
      */
     public function shouldDownloadSubtitles()
@@ -28,8 +43,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         $handler->push($history);
         $mockClient = new Client(['handler' => $handler]);
         $downloader = new Downloader($mockClient);
-        $resource = tmpfile();
-        $downloader->downloadSubsForHash('fake-hash', $resource);
+        $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
         $this->assertCount(1, $historyContainer);
         /** @var Request $request */
         $request = $historyContainer[0]['request'];
@@ -47,8 +61,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
     {
         $mockClient = $this->createGuzzleMockForResponse(new Response(404));
         $downloader = new Downloader($mockClient);
-        $resource = tmpfile();
-        $downloader->downloadSubsForHash('fake-hash', $resource);
+        $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
     }
 
     /**
@@ -60,8 +73,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
     {
         $mockClient = $this->createGuzzleMockForResponse(new Response(400));
         $downloader = new Downloader($mockClient);
-        $resource = tmpfile();
-        $downloader->downloadSubsForHash('fake-hash', $resource);
+        $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
     }
 
     /**
@@ -76,8 +88,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         );
 
         $downloader = new Downloader($mockClient);
-        $resource = tmpfile();
-        $downloader->downloadSubsForHash('fake-hash', $resource);
+        $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
     }
 
     /**

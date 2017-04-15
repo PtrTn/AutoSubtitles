@@ -39,6 +39,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         $provider = new Provider($hashGenerator, $storage, $downloader);
         $success = $provider->downloadSubtitleForVideoFile($videoFileName);
         $this->assertTrue($success);
+        fclose($tmpResource);
     }
 
     public function tearDown()
