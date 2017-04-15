@@ -22,8 +22,8 @@ class SubtitleCollectionTest extends \PHPUnit_Framework_TestCase
             'status' => '200 OK',
             'data' => [
                 $worstMatch,
-                $worstMatch,
                 $mediumMatch,
+                $worstMatch,
                 $bestMatch
             ],
             'seconds' => 0.009
