@@ -29,4 +29,15 @@ class HashGeneratorTest extends \PHPUnit_Framework_TestCase
         $expectedHash = 'ffd8d4aa68033dc03d1c8ef373b9028c';
         $this->assertEquals($expectedHash, $actualHash);
     }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Unable to create video hash
+     */
+    public function shouldErrorOnInvalidFile()
+    {
+        $invalidFile = tempnam(__DIR__, 'fixture');
+        $this->hashGenerator->generateForFilePath($invalidFile);
+    }
 }

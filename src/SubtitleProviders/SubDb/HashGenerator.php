@@ -15,9 +15,6 @@ class HashGenerator
      */
     public function generateForFilePath($filePath)
     {
-        if (!file_exists($filePath)) {
-            throw new \InvalidArgumentException('Video file does not exist');
-        }
         $firstBytes = file_get_contents($filePath, false, null, 0, static::READSIZE);
         if ($firstBytes === false) {
             throw new \InvalidArgumentException('Video file does not exist');
@@ -25,9 +22,6 @@ class HashGenerator
         $size = filesize($filePath);
         $offset = $size - static::READSIZE;
         $lastBytes = file_get_contents($filePath, false, null, $offset, static::READSIZE);
-        if ($lastBytes === false) {
-            throw new \InvalidArgumentException('Video file does not exist');
-        }
         $data = $firstBytes . $lastBytes;
         if (strlen($data) === 0) {
             throw new \RuntimeException('Unable to create video hash');
