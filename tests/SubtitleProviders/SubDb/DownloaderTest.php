@@ -56,6 +56,19 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Error connection to SubDb
      */
+    public function shouldHandle400Error()
+    {
+        $mockClient = $this->createGuzzleMockForResponse(new Response(400));
+        $downloader = new Downloader($mockClient);
+        $resource = tmpfile();
+        $downloader->downloadSubsForHash('fake-hash', $resource);
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Error connection to SubDb
+     */
     public function shouldHandleConnectionErrors()
     {
         $mockClient = $this->createGuzzleMockForResponse(
