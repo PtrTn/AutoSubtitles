@@ -22,8 +22,8 @@ class Downloader
     }
 
     /**
-     * @param $url
-     * @param $resource
+     * @param string $url
+     * @param resource $resource
      * @return bool
      * @throws \Exception
      */

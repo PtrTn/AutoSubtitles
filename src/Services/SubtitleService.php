@@ -25,7 +25,7 @@ class SubtitleService
     }
 
     /**
-     * @param $videoFile
+     * @param string $videoFile
      * @return int
      */
     public function downloadSubtitlesForVideoFile($videoFile)
