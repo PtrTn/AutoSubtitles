@@ -38,8 +38,10 @@ class Downloader
             fclose($resource);
             return true;
         } catch (\Exception $e) {
-            throw $e;
+            throw new \RuntimeException(sprintf(
+                'Unable to download from Opensubtitles, because "%s"',
+                $e->getMessage()
+            ));
         }
-        return false;
     }
 }

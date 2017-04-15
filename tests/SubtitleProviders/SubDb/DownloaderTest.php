@@ -24,7 +24,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        fclose($this->tempResource);
+        @fclose($this->tempResource);
     }
 
     /**
