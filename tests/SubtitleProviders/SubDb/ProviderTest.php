@@ -10,6 +10,11 @@ use SubtitleProviders\SubDb\Storage;
 
 class ProviderTest extends \PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        Mockery::close();
+    }
+
     /**
      * @test
      */
@@ -40,10 +45,5 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         $success = $provider->downloadSubtitleForVideoFile($videoFileName);
         $this->assertTrue($success);
         fclose($tmpResource);
-    }
-
-    public function tearDown()
-    {
-        Mockery::close();
     }
 }
