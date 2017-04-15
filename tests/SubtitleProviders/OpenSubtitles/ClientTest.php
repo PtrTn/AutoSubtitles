@@ -29,29 +29,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     private $httpClient;
 
-    private function createClientFromResponse($response)
-    {
-        $history = Middleware::history($this->historyContainer);
-        $mockHandler = new MockHandler([$response]);
-        $handler = HandlerStack::create($mockHandler);
-        $handler->push($history);
-        $this->httpClient = new HttpClient(['handler' => $handler]);
-        $rpcClient = new RpcClient(
-            'http://api.opensubtitles.org/xml-rpc',
-            new HttpAdapterTransport(
-                MessageFactoryDiscovery::find(),
-                new GuzzleAdapter($this->httpClient)
-            )
-        );
-        return new Client($rpcClient);
-    }
-
     /**
      * @test
      */
     public function shouldLogin()
     {
-        $xmlResponse = $this->getFixtureByName('fixture.xml');
+        $xmlResponse = $this->getFixtureByName('login-success.xml');
         $response = new Response(200, [], $xmlResponse);
         $client = $this->createClientFromResponse($response);
 
@@ -59,7 +42,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $password = 'fake-password';
         $useragent = 'fake-useragent';
 
-        $client->login($username, $password, $useragent);
+        $success = $client->login($username, $password, $useragent);
+        $this->assertTrue($success);
         $lastRequestXml = $this->getLastRequestXml();
 
         $this->assertEquals('LogIn', $lastRequestXml->methodName);
@@ -122,6 +106,23 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $filesize = 1234;
 
         $client->searchSubtitlesByHash($hash, $filesize);
+    }
+
+    private function createClientFromResponse($response)
+    {
+        $history = Middleware::history($this->historyContainer);
+        $mockHandler = new MockHandler([$response]);
+        $handler = HandlerStack::create($mockHandler);
+        $handler->push($history);
+        $this->httpClient = new HttpClient(['handler' => $handler]);
+        $rpcClient = new RpcClient(
+            'http://api.opensubtitles.org/xml-rpc',
+            new HttpAdapterTransport(
+                MessageFactoryDiscovery::find(),
+                new GuzzleAdapter($this->httpClient)
+            )
+        );
+        return new Client($rpcClient);
     }
 
     /**

@@ -44,10 +44,10 @@ class Client
                 $this->token = $response['token'];
                 return true;
             }
+            return false;
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Unable to login to Opensubtitles, because "%s"', $e->getMessage()));
         }
-        return false;
     }
 
     /**
