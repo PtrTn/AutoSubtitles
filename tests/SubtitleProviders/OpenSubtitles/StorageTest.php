@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\SubtitleProviders\SubDb;
+namespace Tests\SubtitleProviders\OpenSubtitles;
 
 use Helpers\FixtureAware;
 use SubtitleProviders\SubDb\Storage;
@@ -28,7 +28,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
         $resource = $this->storage->createSubsFileByVideoName($filePath);
         $this->assertTrue(is_resource($resource), 'Subtitle file is not a resource');
         try {
-            $this->getFixturePathByName('dexter.SubDb.srt');
+            $this->getFixturePathByName('dexter.OpenSubtitles.srt');
         } catch (\Exception $e) {
             $this->fail('Subtitle file should be created, but was not');
         }
@@ -38,7 +38,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         try {
-            $filePath = $this->getFixturePathByName('dexter.SubDb.srt');
+            $filePath = $this->getFixturePathByName('dexter.OpenSubtitles.srt');
             unlink($filePath);
         } catch (\Exception $e) {
         }
