@@ -2,7 +2,7 @@
 <?php
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Commands\SubtitlesDownloadCommand;
+use Commands\AppSubtitlesDownloadCommand;
 use Knp\Provider\ConsoleServiceProvider;
 use Rpodwika\Silex\YamlConfigServiceProvider;
 use ServiceProviders\ApplicationServiceProvider;
@@ -27,5 +27,5 @@ $app->register(new OpenSubtitlesServiceProvider());
 $app->register(new ApplicationServiceProvider());
 
 $console = $app['console'];
-$console->add(new SubtitlesDownloadCommand());
+$console->add(new AppSubtitlesDownloadCommand());
 $console->run();

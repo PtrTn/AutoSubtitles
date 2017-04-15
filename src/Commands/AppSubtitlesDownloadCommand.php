@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SubtitlesDownloadCommand extends Command
+class AppSubtitlesDownloadCommand extends Command
 {
     protected function configure()
     {
@@ -29,13 +29,12 @@ class SubtitlesDownloadCommand extends Command
         if (!is_file($videoFile)) {
             throw new \InvalidArgumentException(sprintf('"%s" does not exist', $videoFile));
         }
-        $projectDir = $this->getProjectDirectory();
         $output->writeln('Looking for subtitles');
         $app = $this->getSilexApplication();
 
         /** @var SubtitleService $subtitleService */
         $subtitleService = $app[SubtitleService::class];
-        $successCount = $subtitleService->downloadSubtitlesForVideoFile($projectDir . $videoFile);
+        $successCount = $subtitleService->downloadSubtitlesForVideoFile($videoFile);
 
         if ($successCount === 0) {
             $output->writeln(sprintf('No subtitles found for "%s"', $videoFile));
