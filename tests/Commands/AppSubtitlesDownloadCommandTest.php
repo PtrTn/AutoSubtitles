@@ -106,6 +106,39 @@ class AppSubtitlesDownloadCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function shouldReportIfNoSubtitlesCouldBefound()
+    {
+        $videoFixture = __DIR__ . '/../fixtures/breakdance.avi';
+        $command = $this->bootstrapCommand();
+
+        $this->subtitleService
+            ->shouldReceive('downloadSubtitlesForVideoFile')
+            ->with($videoFixture)
+            ->andReturn(0)
+            ->getMock();
+
+        $this->input
+            ->shouldReceive('getArgument')
+            ->with('video file')
+            ->andReturn($videoFixture)
+            ->getMock();
+
+        $this->output
+            ->shouldReceive('writeln')
+            ->with('Looking for subtitles')
+            ->once()
+            ->getMock()
+            ->shouldReceive('writeln')
+            ->with('No subtitles found for "' . $videoFixture . '"')
+            ->once()
+            ->getMock();
+
+        $command->run($this->input, $this->output);
+    }
+
+    /**
      * @return AppSubtitlesDownloadCommand
      */
     private function bootstrapCommand()
