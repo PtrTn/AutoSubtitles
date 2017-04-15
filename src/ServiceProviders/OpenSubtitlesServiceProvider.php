@@ -4,6 +4,7 @@ namespace ServiceProviders;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use SubtitleProviders\GenericStorage;
 use SubtitleProviders\OpenSubtitles\Client;
 use SubtitleProviders\OpenSubtitles\Downloader;
 use SubtitleProviders\OpenSubtitles\HashGenerator;
@@ -45,7 +46,7 @@ class OpenSubtitlesServiceProvider implements ServiceProviderInterface
             return new HashGenerator();
         };
         $container[Storage::class] = function () {
-            return new Storage();
+            return new Storage(new GenericStorage());
         };
         $container[Downloader::class] = function () {
             $httpClient = new HttpClient([

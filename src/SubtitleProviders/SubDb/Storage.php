@@ -2,17 +2,26 @@
 
 namespace SubtitleProviders\SubDb;
 
-use SubtitleProviders\AbstractStorage;
+use SubtitleProviders\GenericStorage;
 
-class Storage extends AbstractStorage
+class Storage
 {
     /**
-     * @param string $storageFolder
-     * @param string $subtitleBaseName
+     * @var GenericStorage
+     */
+    private $storage;
+
+    public function __construct(GenericStorage $storage)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
+     * @param string $videoName
      * @return resource
      */
-    protected function createSubtitleResource($storageFolder, $subtitleBaseName)
+    public function createSubsFileByVideoName($videoName)
     {
-        return parent::createSubtitleResourceForIdentifier($storageFolder, $subtitleBaseName, 'SubDb');
+        return $this->storage->createSubsFileByVideoName($videoName, 'SubDb');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace ServiceProviders;
 
+use SubtitleProviders\GenericStorage;
 use SubtitleProviders\SubDb\Downloader;
 use SubtitleProviders\SubDb\HashGenerator;
 use SubtitleProviders\SubDb\Provider;
@@ -33,7 +34,7 @@ class SubDbServiceProvider implements ServiceProviderInterface
             return new Downloader($httpClient);
         };
         $container[Storage::class] = function () {
-            return new Storage();
+            return new Storage(new GenericStorage());
         };
         $container[Provider::class] = function () use ($container) {
             return new Provider(

@@ -2,32 +2,27 @@
 
 namespace SubtitleProviders;
 
-abstract class AbstractStorage
+class GenericStorage
 {
     /**
-     * @param string $storageFolder
-     * @param string $subtitleBaseName
-     * @return resource
-     */
-    abstract protected function createSubtitleResource($storageFolder, $subtitleBaseName);
-
-    /**
      * @param string $videoName
+     * @param string $storageIdentifier
      * @return resource
      */
-    public function createSubsFileByVideoName($videoName)
+    public function createSubsFileByVideoName($videoName, $storageIdentifier)
     {
         $subtitleBaseName = $this->getBaseName($videoName);
         $storageFolder = $this->getFolder($videoName);
-        return $this->createSubtitleResource($storageFolder, $subtitleBaseName);
+        return $this->createSubtitleResource($storageFolder, $subtitleBaseName, $storageIdentifier);
     }
 
     /**
      * @param string $storageFolder
      * @param string $subtitleBaseName
+     * @param string $identifier
      * @return resource
      */
-    protected function createSubtitleResourceForIdentifier($storageFolder, $subtitleBaseName, $identifier)
+    private function createSubtitleResource($storageFolder, $subtitleBaseName, $identifier)
     {
         $subsFile = $storageFolder . '/' . $subtitleBaseName . '.' . $identifier . '.srt';
         $resource = @fopen($subsFile, 'w+');

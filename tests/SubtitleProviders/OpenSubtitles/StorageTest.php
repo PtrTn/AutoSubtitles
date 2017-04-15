@@ -5,6 +5,7 @@ namespace Tests\SubtitleProviders\OpenSubtitles;
 use Helpers\FixtureAware;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
+use SubtitleProviders\GenericStorage;
 use SubtitleProviders\OpenSubtitles\Storage;
 
 class StorageTest extends \PHPUnit_Framework_TestCase
@@ -18,7 +19,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->storage = new Storage();
+        $this->storage = new Storage(new GenericStorage());
     }
 
     /**
