@@ -3,7 +3,7 @@
 namespace Tests\SubtitleProviders\OpenSubtitles;
 
 use Helpers\FixtureAware;
-use SubtitleProviders\SubDb\Storage;
+use SubtitleProviders\OpenSubtitles\Storage;
 
 class StorageTest extends \PHPUnit_Framework_TestCase
 {
