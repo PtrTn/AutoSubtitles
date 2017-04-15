@@ -32,7 +32,7 @@
             "@phpmd",
             "@phpunit"
         ],
-        "phpunit": "vendor/bin/phpunit tests",
+        "phpunit": "vendor/bin/phpunit -c phpunit.xml",
         "phpmd": "vendor/bin/phpmd src text phpmd.xml --suffixes php",
         "phpcs": "vendor/bin/phpcs --report=full --standard=ruleset.xml src"
     },
