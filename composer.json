@@ -18,7 +18,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7",
-        "phpmd/phpmd": "^2.6"
+        "phpmd/phpmd": "^2.6",
+        "mikey179/vfsStream": "^1.6"
     },
     "authors": [
         {
