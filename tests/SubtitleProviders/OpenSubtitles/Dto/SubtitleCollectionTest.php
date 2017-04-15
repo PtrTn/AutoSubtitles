@@ -9,6 +9,31 @@ class SubtitleCollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnBestMatch()
+    {
+        $fileName = 'something-should-match-very-well-to-this';
+        $worstMatch = $this->getResponseItem();
+        $worstMatch['MovieReleaseName'] = 'this-doesnt-match-very-well';
+        $bestMatch = $this->getResponseItem();
+        $bestMatch['MovieReleaseName'] = 'something-matches-very-well-to-this';
+        $response = [
+            'status' => '200 OK',
+            'data' => [
+                $worstMatch,
+                $bestMatch
+            ],
+            'seconds' => 0.009
+        ];
+        $subtitleCollection = SubtitleCollection::fromResponse($response);
+        $this->assertEquals(
+            $bestMatch['IDSubMovieFile'],
+            $subtitleCollection->getBestMatch($fileName)->IDSubMovieFile
+        );
+    }
+
+    /**
+     * @test
+     */
     public function shouldCreateFromResponse()
     {
         $response = [
@@ -23,6 +48,19 @@ class SubtitleCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertContainsOnlyInstancesOf(Subtitle::class, $subtitleCollection->subtitles);
         $this->assertEquals('200 OK', $subtitleCollection->status);
         $this->assertEquals(0.009, $subtitleCollection->seconds);
+    }
+    /**
+     * @test
+     */
+    public function shouldHandleEmptyResponse()
+    {
+        $response = [
+            'status' => '200 OK',
+            'data' => [],
+            'seconds' => 0.009
+        ];
+        $subtitleCollection = SubtitleCollection::fromResponse($response);
+        $this->assertEmpty($subtitleCollection->subtitles);
     }
 
     /**
