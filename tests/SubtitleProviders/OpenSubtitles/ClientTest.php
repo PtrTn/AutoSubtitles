@@ -58,7 +58,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Unable to login to Opensubtitles
      */
-    public function shouldHandleLoginError()
+    public function shouldHandleLoginException()
     {
         $response = new Response(401);
         $client = $this->createClientFromResponse($response);
@@ -68,6 +68,23 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $useragent = 'fake-useragent';
 
         $client->login($username, $password, $useragent);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleLoginError()
+    {
+        $xmlResponse = $this->getFixtureByName('fixture.xml');
+        $response = new Response(200, [], $xmlResponse);
+        $client = $this->createClientFromResponse($response);
+
+        $username = 'fake-user';
+        $password = 'fake-password';
+        $useragent = 'fake-useragent';
+
+        $success = $client->login($username, $password, $useragent);
+        $this->assertFalse($success);
     }
 
     /**
