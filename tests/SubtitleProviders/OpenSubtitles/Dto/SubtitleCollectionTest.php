@@ -14,12 +14,16 @@ class SubtitleCollectionTest extends \PHPUnit_Framework_TestCase
         $fileName = 'something-should-match-very-well-to-this';
         $worstMatch = $this->getResponseItem();
         $worstMatch['MovieReleaseName'] = 'this-doesnt-match-very-well';
+        $mediumMatch = $this->getResponseItem();
+        $mediumMatch['MovieReleaseName'] = 'this-shouldnt-match-very-well';
         $bestMatch = $this->getResponseItem();
         $bestMatch['MovieReleaseName'] = 'something-matches-very-well-to-this';
         $response = [
             'status' => '200 OK',
             'data' => [
                 $worstMatch,
+                $worstMatch,
+                $mediumMatch,
                 $bestMatch
             ],
             'seconds' => 0.009
@@ -29,6 +33,22 @@ class SubtitleCollectionTest extends \PHPUnit_Framework_TestCase
             $bestMatch['IDSubMovieFile'],
             $subtitleCollection->getBestMatch($fileName)->IDSubMovieFile
         );
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage No best subtitle found
+     */
+    public function shouldReturnErrorOnNoBestMatch()
+    {
+        $response = [
+            'status' => '200 OK',
+            'data' => [],
+            'seconds' => 0.009
+        ];
+        $subtitleCollection = SubtitleCollection::fromResponse($response);
+        $subtitleCollection->getBestMatch('something');
     }
 
     /**
