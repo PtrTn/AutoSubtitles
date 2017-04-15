@@ -25,16 +25,10 @@ class HashGenerator
             1 => ($fileSize >> 16) & 0xFFFF,
             0 => $fileSize & 0xFFFF
         );
-        for ($i = 0; $i < 8192; $i++) {
-            $tmp  = $this->readUINT64($handle);
-            $hash = $this->addUINT64($hash, $tmp);
-        }
+        $hash = $this->read8Kb($handle, $hash);
         $offset = $fileSize - 65536;
         fseek($handle, $offset > 0 ? $offset : 0, SEEK_SET);
-        for ($i = 0; $i < 8192; $i++) {
-            $tmp  = $this->readUINT64($handle);
-            $hash = $this->addUINT64($hash, $tmp);
-        }
+        $hash = $this->read8Kb($handle, $hash);
         fclose($handle);
         return $this->uINT64FormatHex($hash);
     }
@@ -77,5 +71,19 @@ class HashGenerator
     private function uINT64FormatHex($n)
     {
         return sprintf("%04x%04x%04x%04x", $n[3], $n[2], $n[1], $n[0]);
+    }
+
+    /**
+     * @param $handle
+     * @param $hash
+     * @return array
+     */
+    private function read8Kb($handle, $hash)
+    {
+        for ($i = 0; $i < 8192; $i++) {
+            $tmp = $this->readUINT64($handle);
+            $hash = $this->addUINT64($hash, $tmp);
+        }
+        return $hash;
     }
 }

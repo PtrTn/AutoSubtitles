@@ -38,6 +38,7 @@ class SubtitleService
                     $successCount++;
                 }
             } catch (\Exception $e) {
+                // If no subtitles could be retrieved $successCount will remain 0
             }
         }
         return $successCount;
