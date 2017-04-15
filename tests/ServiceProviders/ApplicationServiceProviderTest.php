@@ -28,7 +28,7 @@ class ApplicationServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->app = new Application();
         $this->app->register(new YamlConfigServiceProvider(
-            __DIR__ . '/../../app/config.yml'
+            __DIR__ . '/../../app/config.yml.dist'
         ));
         $this->app->register(new ApplicationServiceProvider());
         $this->app->register(new SubDbServiceProvider());
