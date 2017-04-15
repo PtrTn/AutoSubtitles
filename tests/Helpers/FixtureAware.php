@@ -16,4 +16,18 @@ trait FixtureAware
         }
         return $fixturePath;
     }
+
+    /**
+     * @param $fileName
+     * @return string
+     */
+    public function getFixtureByName($fileName)
+    {
+        $fixturePath = $this->getFixturePathByName($fileName);
+        $fixture = file_get_contents($fixturePath);
+        if ($fixture === false) {
+            throw new \RuntimeException('Unable to open fixture "%s"', $fixturePath);
+        }
+        return $fixture;
+    }
 }

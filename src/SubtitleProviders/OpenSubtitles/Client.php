@@ -29,7 +29,7 @@ class Client
      * @param string $password
      * @param string $userAgent
      * @return bool
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     public function login($username, $password, $userAgent)
     {
@@ -45,7 +45,7 @@ class Client
                 return true;
             }
         } catch (\Exception $e) {
-            throw $e;
+            throw new \RuntimeException(sprintf('Unable to login to Opensubtitles, because "%s"', $e->getMessage()));
         }
         return false;
     }
@@ -54,7 +54,7 @@ class Client
      * @param $hash
      * @param $fileSize
      * @return array
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     public function searchSubtitlesByHash($hash, $fileSize)
     {
@@ -64,14 +64,17 @@ class Client
                 [
                     [
                         'sublanguageid' => 'eng',
-                        'moviehash' => $hash,
+                        'moviehash' =>  $hash,
                         'moviebytesize' => $fileSize
                     ]
                 ]
             ]);
             return $response;
         } catch (\Exception $e) {
-            throw $e;
+            throw new \RuntimeException(sprintf(
+                'Unable to search for subtitles on Opensubtitles, because "%s"',
+                $e->getMessage()
+            ));
         }
     }
 }
