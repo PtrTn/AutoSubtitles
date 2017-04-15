@@ -3,8 +3,6 @@ namespace Tests\SubtitleProviders\OpenSubtitles;
 
 use Helpers\FixtureAware;
 use Mockery;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamFile;
 use SubtitleProviders\OpenSubtitles\Client;
 use SubtitleProviders\OpenSubtitles\Downloader;
 use SubtitleProviders\OpenSubtitles\HashGenerator;
