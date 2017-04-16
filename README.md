@@ -29,7 +29,7 @@ After installing, subtitles can be downloaded using the following command:
 
 Running this command will download subtitles for the given video file. 
 Subtitles are matched based on video hash, rather than filename which proves to be more accurate.
-Subtitles are downloaded from [SubDb.com](http://thesubdb.com/api/) and [Opensubtitles.org](https://www.opensubtitles.org).
+Subtitles are downloaded from [SubDb.com](http://thesubdb.com/) and [Opensubtitles.org](https://www.opensubtitles.org).
 Downloaded subtitle files are renamed to match the given input video file and will have a suffix indicating its source.
 
 # Example
@@ -48,7 +48,9 @@ Opening the video file in [VLC player](http://www.videolan.org/vlc/index.html) w
 
 # Wishlist
 - Configurable languages
-- Domain specific exceptions for nicer reporting
 - Allow downloading of subtitles for multiple files at once
+- Checking for rate limits
+- Caching
+- Domain specific exceptions for nicer reporting
 - Async downloading
 - Client side application
