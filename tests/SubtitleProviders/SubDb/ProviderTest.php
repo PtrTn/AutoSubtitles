@@ -3,7 +3,7 @@
 namespace Tests\SubtitleProviders\SubDb;
 
 use Mockery;
-use SubtitleProviders\SubDb\Downloader;
+use SubtitleProviders\SubDb\Client;
 use SubtitleProviders\SubDb\HashGenerator;
 use SubtitleProviders\SubDb\Provider;
 use SubtitleProviders\SubDb\Storage;
@@ -38,7 +38,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->getMock();
 
-        $downloader = Mockery::mock(Downloader::class)
+        $downloader = Mockery::mock(Client::class)
             ->shouldReceive('downloadSubsForHash')
             ->withArgs([$fakeHash, $tmpResource])
             ->andReturn(true)

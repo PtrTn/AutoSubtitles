@@ -3,6 +3,7 @@
 namespace Commands;
 
 use Knp\Command\Command;
+use Services\LanguageService;
 use Services\SubtitleService;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +16,12 @@ class AppSubtitlesDownloadCommand extends Command
         $this
             ->setName("app:subtitles:download")
             ->setDescription("Download subtitles for a given movie or tv series")
-            ->addArgument('video file', InputArgument::REQUIRED);
+            ->addArgument(
+                'video file',
+                InputArgument::REQUIRED,
+                'The movie or tv series file for which subtitles should be downloaded'
+            )
+            ->addArgument('language', InputArgument::OPTIONAL, 'Language for subtitles', 'en');
     }
 
     /**
@@ -25,19 +31,36 @@ class AppSubtitlesDownloadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $app = $this->getSilexApplication();
+
+        $output->writeln('Verifying input video file');
         $videoFile = $input->getArgument('video file');
         if (!is_file($videoFile)) {
             throw new \InvalidArgumentException(sprintf('"%s" does not exist', $videoFile));
         }
-        $output->writeln('Looking for subtitles');
-        $app = $this->getSilexApplication();
 
         /** @var SubtitleService $subtitleService */
         $subtitleService = $app[SubtitleService::class];
-        $successCount = $subtitleService->downloadSubtitlesForVideoFile($videoFile);
+
+        $output->writeln('Verifying input language');
+        $language = $input->getArgument('language');
+        $supported = $subtitleService->isSupportedLanguage($language);
+        if ($supported === false) {
+            $supportedLanguages = $subtitleService->getSupportedLanguages();
+            $output->writeln(sprintf(
+                'Language "%s" not supported, please enter one of the following options: %s"',
+                $language,
+                implode(', ', $supportedLanguages)
+            ));
+            return;
+        }
+
+        $output->writeln('Looking for subtitles');
+
+        $successCount = $subtitleService->downloadSubtitlesForVideoFile($videoFile, $language);
 
         if ($successCount === 0) {
-            $output->writeln(sprintf('No subtitles found for "%s"', $videoFile));
+            $output->writeln(sprintf('No subtitles found for "%s" in language "%s"', $videoFile, $language));
             return;
         }
         $output->writeln(sprintf('Successfully downloaded %s subtitles for "%s"', $successCount, $videoFile));

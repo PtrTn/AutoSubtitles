@@ -16,32 +16,33 @@ class Provider implements SubtitleProvider
     private $storage;
 
     /**
-     * @var Downloader
+     * @var Client
      */
-    private $downloader;
+    private $client;
 
     /**
      * Provider constructor.
      * @param HashGenerator $hashGenerator
      * @param Storage $storage
-     * @param Downloader $downloader
+     * @param Client $client
      */
-    public function __construct(HashGenerator $hashGenerator, Storage $storage, Downloader $downloader)
+    public function __construct(HashGenerator $hashGenerator, Storage $storage, Client $client)
     {
         $this->hashGenerator = $hashGenerator;
         $this->storage = $storage;
-        $this->downloader = $downloader;
+        $this->client = $client;
     }
 
     /**
-     * @param string $videoFilename
+     * @param string $videoFileName
+     * @param string $language
      * @return bool
      */
-    public function downloadSubtitleForVideoFile($videoFilename)
+    public function downloadSubtitleForVideoFile($videoFileName, $language)
     {
-        $hash = $this->hashGenerator->generateForFilePath($videoFilename);
-        $resource = $this->storage->createSubsFileByVideoName($videoFilename);
-        $success = $this->downloader->downloadSubsForHash($hash, $resource);
+        $hash = $this->hashGenerator->generateForFilePath($videoFileName);
+        $resource = $this->storage->createSubsFileByVideoName($videoFileName);
+        $success = $this->client->downloadSubsForHash($hash, $language, $resource);
         return $success;
     }
 }

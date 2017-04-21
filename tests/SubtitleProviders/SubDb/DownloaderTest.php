@@ -8,7 +8,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use SubtitleProviders\SubDb\Downloader;
+use SubtitleProviders\SubDb\Client as HttpClient;
 
 class DownloaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,8 +41,8 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         $mockHandler = new MockHandler([new Response(200)]);
         $handler = HandlerStack::create($mockHandler);
         $handler->push($history);
-        $mockClient = new Client(['handler' => $handler]);
-        $downloader = new Downloader($mockClient);
+        $mockClient = new HttpClient(['handler' => $handler]);
+        $downloader = new Client($mockClient);
         $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
         $this->assertCount(1, $historyContainer);
         /** @var Request $request */
@@ -60,7 +60,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
     public function shouldHandle404Error()
     {
         $mockClient = $this->createGuzzleMockForResponse(new Response(404));
-        $downloader = new Downloader($mockClient);
+        $downloader = new Client($mockClient);
         $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
     }
 
@@ -72,7 +72,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
     public function shouldHandle400Error()
     {
         $mockClient = $this->createGuzzleMockForResponse(new Response(400));
-        $downloader = new Downloader($mockClient);
+        $downloader = new Client($mockClient);
         $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
     }
 
@@ -87,7 +87,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
             new Response(500)
         );
 
-        $downloader = new Downloader($mockClient);
+        $downloader = new Client($mockClient);
         $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
     }
 

@@ -26,14 +26,15 @@ class SubtitleService
 
     /**
      * @param string $videoFile
+     * @param $language
      * @return int
      */
-    public function downloadSubtitlesForVideoFile($videoFile)
+    public function downloadSubtitlesForVideoFile($videoFile, $language)
     {
         $successCount = 0;
         foreach ($this->subtitleProviders as $subtitleProvider) {
             try {
-                $success = $subtitleProvider->downloadSubtitleForVideoFile($videoFile);
+                $success = $subtitleProvider->downloadSubtitleForVideoFile($videoFile, $language);
                 if ($success === true) {
                     $successCount++;
                 }
@@ -42,5 +43,34 @@ class SubtitleService
             }
         }
         return $successCount;
+    }
+
+    /**
+     * @param string $language
+     * @return bool
+     */
+    public function isSupportedLanguage($language)
+    {
+        $supportedLanguages = $this->getSupportedLanguages();
+        return in_array($language, $supportedLanguages);
+    }
+
+    /**
+     * @return array
+     */
+    public function getSupportedLanguages()
+    {
+        return [
+            'en',
+            'es',
+            'fr',
+            'it',
+            'nl',
+            'pl',
+            'pt',
+            'ro',
+            'sv',
+            'tr'
+        ];
     }
 }
