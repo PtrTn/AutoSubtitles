@@ -40,8 +40,12 @@ class AppSubtitlesDownloadCommandTest extends \PHPUnit_Framework_TestCase
         $command = $this->bootstrapCommand();
 
         $this->subtitleService
+            ->shouldReceive('isSupportedLanguage')
+            ->with('en')
+            ->andReturn(true)
+            ->getMock()
             ->shouldReceive('downloadSubtitlesForVideoFile')
-            ->with($videoFixture)
+            ->withArgs([$videoFixture, 'en'])
             ->getMock();
 
         $this->input
@@ -56,7 +60,7 @@ class AppSubtitlesDownloadCommandTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "non-existing-file" does not exist
+     * @expectedExceptionMessage Video file "non-existing-file" could not be found
      */
     public function shouldValidateInputVideoFile()
     {
@@ -74,6 +78,38 @@ class AppSubtitlesDownloadCommandTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Language "non-existing-language" not supported
+     */
+    public function shouldValidateInputLanguage()
+    {
+        $videoFixture = __DIR__ . '/../fixtures/breakdance.avi';
+        $language = 'non-existing-language';
+        $command = $this->bootstrapCommand();
+
+        $this->subtitleService
+            ->shouldReceive('isSupportedLanguage')
+            ->andReturn(false)
+            ->getMock()
+            ->shouldReceive('getSupportedLanguages')
+            ->andReturn(['en', 'es', 'fr', 'it', 'nl', 'pl', 'pt', 'ro','sv', 'tr'])
+            ->getMock();
+
+        $this->input
+            ->shouldReceive('getArgument')
+            ->with('video file')
+            ->andReturn($videoFixture)
+            ->getMock()
+            ->shouldReceive('getArgument')
+            ->with('language')
+            ->andReturn($language)
+            ->getMock();
+
+        $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
      */
     public function shouldReportSuccessCount()
     {
@@ -81,12 +117,20 @@ class AppSubtitlesDownloadCommandTest extends \PHPUnit_Framework_TestCase
         $command = $this->bootstrapCommand();
 
         $this->subtitleService
+            ->shouldReceive('isSupportedLanguage')
+            ->with('en')
+            ->andReturn(true)
+            ->getMock()
             ->shouldReceive('downloadSubtitlesForVideoFile')
-            ->with($videoFixture)
+            ->withArgs([$videoFixture, 'en'])
             ->andReturn(1)
             ->getMock();
 
         $this->input
+            ->shouldReceive('getArgument')
+            ->with('language')
+            ->andReturn('en')
+            ->getMock()
             ->shouldReceive('getArgument')
             ->with('video file')
             ->andReturn($videoFixture)
@@ -98,7 +142,7 @@ class AppSubtitlesDownloadCommandTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->getMock()
             ->shouldReceive('writeln')
-            ->with('Successfully downloaded 1 subtitles for "' . $videoFixture . '"')
+            ->with('Successfully downloaded 1 subtitles "' . $videoFixture . '"')
             ->once()
             ->getMock();
 
@@ -114,12 +158,20 @@ class AppSubtitlesDownloadCommandTest extends \PHPUnit_Framework_TestCase
         $command = $this->bootstrapCommand();
 
         $this->subtitleService
+            ->shouldReceive('isSupportedLanguage')
+            ->with('en')
+            ->andReturn(true)
+            ->getMock()
             ->shouldReceive('downloadSubtitlesForVideoFile')
-            ->with($videoFixture)
+            ->withArgs([$videoFixture, 'en'])
             ->andReturn(0)
             ->getMock();
 
         $this->input
+            ->shouldReceive('getArgument')
+            ->with('language')
+            ->andReturn('en')
+            ->getMock()
             ->shouldReceive('getArgument')
             ->with('video file')
             ->andReturn($videoFixture)
@@ -127,11 +179,15 @@ class AppSubtitlesDownloadCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->output
             ->shouldReceive('writeln')
+            ->with('Verifying input language')
+            ->once()
+            ->getMock()
+            ->shouldReceive('writeln')
             ->with('Looking for subtitles')
             ->once()
             ->getMock()
             ->shouldReceive('writeln')
-            ->with('No subtitles found for "' . $videoFixture . '"')
+            ->with('No subtitles found for "' . $videoFixture . '" in language "en"')
             ->once()
             ->getMock();
 

@@ -36,7 +36,7 @@ class AppSubtitlesDownloadCommand extends Command
         $output->writeln('Verifying input video file');
         $videoFile = $input->getArgument('video file');
         if (!is_file($videoFile)) {
-            throw new \InvalidArgumentException(sprintf('"%s" does not exist', $videoFile));
+            throw new \InvalidArgumentException(sprintf('Video file "%s" could not be found', $videoFile));
         }
 
         /** @var SubtitleService $subtitleService */
@@ -47,12 +47,11 @@ class AppSubtitlesDownloadCommand extends Command
         $supported = $subtitleService->isSupportedLanguage($language);
         if ($supported === false) {
             $supportedLanguages = $subtitleService->getSupportedLanguages();
-            $output->writeln(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Language "%s" not supported, please enter one of the following options: %s"',
                 $language,
                 implode(', ', $supportedLanguages)
             ));
-            return;
         }
 
         $output->writeln('Looking for subtitles');
@@ -63,7 +62,7 @@ class AppSubtitlesDownloadCommand extends Command
             $output->writeln(sprintf('No subtitles found for "%s" in language "%s"', $videoFile, $language));
             return;
         }
-        $output->writeln(sprintf('Successfully downloaded %s subtitles for "%s"', $successCount, $videoFile));
+        $output->writeln(sprintf('Successfully downloaded %s subtitles "%s"', $successCount, $videoFile));
         return;
     }
 }
