@@ -59,6 +59,9 @@ class SubtitleServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $successCount);
     }
 
+    /**
+     * @test
+     */
     public function shouldDetermineIfLanguageIsSupported()
     {
         $supportedLanguage = 'en';
