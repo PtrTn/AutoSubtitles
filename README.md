@@ -39,8 +39,8 @@ Running the following command:
 
 Will place the following two files in the same directory
 
-- `Legion.S01E01.720p.HDTV.x264-FLEET[eztv].OpenSubtitles.srt`
-- `Legion.S01E01.720p.HDTV.x264-FLEET[eztv].SubDb.srt`
+- `Legion.S01E01.720p.HDTV.x264-FLEET[eztv].OpenSubtitles-EN.srt`
+- `Legion.S01E01.720p.HDTV.x264-FLEET[eztv].SubDb-EN.srt`
 
 Opening the video file in [VLC player](http://www.videolan.org/vlc/index.html) will automatically load the subtitle files as below
 
