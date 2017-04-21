@@ -6,25 +6,27 @@ class GenericStorage
 {
     /**
      * @param string $videoName
+     * @param $language
      * @param string $storageIdentifier
      * @return resource
      */
-    public function createSubsFileByVideoName($videoName, $storageIdentifier)
+    public function createSubsFileByVideoName($videoName, $language, $storageIdentifier)
     {
         $subtitleBaseName = $this->getBaseName($videoName);
         $storageFolder = $this->getFolder($videoName);
-        return $this->createSubtitleResource($storageFolder, $subtitleBaseName, $storageIdentifier);
+        return $this->createSubtitleResource($storageFolder, $subtitleBaseName, $language, $storageIdentifier);
     }
 
     /**
      * @param string $storageFolder
      * @param string $subtitleBaseName
+     * @param $language
      * @param string $identifier
      * @return resource
      */
-    private function createSubtitleResource($storageFolder, $subtitleBaseName, $identifier)
+    private function createSubtitleResource($storageFolder, $subtitleBaseName, $language, $identifier)
     {
-        $subsFile = $storageFolder . '/' . $subtitleBaseName . '.' . $identifier . '.srt';
+        $subsFile = $storageFolder . '/' . $subtitleBaseName . '.' . $identifier . '-' . strtoupper($language) . '.srt';
         $resource = @fopen($subsFile, 'w+');
         if ($resource === false) {
             throw new \RuntimeException(sprintf('Unable to write subtitle file %s', $subsFile));

@@ -41,7 +41,7 @@ class Provider implements SubtitleProvider
     public function downloadSubtitleForVideoFile($videoFileName, $language)
     {
         $hash = $this->hashGenerator->generateForFilePath($videoFileName);
-        $resource = $this->storage->createSubsFileByVideoName($videoFileName);
+        $resource = $this->storage->createSubsFileByVideoName($videoFileName, $language);
         $success = $this->client->downloadSubsForHash($hash, $language, $resource);
         return $success;
     }

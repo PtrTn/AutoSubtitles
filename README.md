@@ -54,3 +54,6 @@ Opening the video file in [VLC player](http://www.videolan.org/vlc/index.html) w
 - Domain specific exceptions for nicer reporting
 - Async downloading
 - Client side application
+
+# Known bugs
+- When no subtitles are found, empty subtitle file is created

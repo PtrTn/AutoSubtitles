@@ -18,10 +18,19 @@ class Storage
 
     /**
      * @param string $videoName
+     * @param $language
      * @return resource
      */
-    public function createSubsFileByVideoName($videoName)
+    public function createSubsFileByVideoName($videoName, $language)
     {
-        return $this->storage->createSubsFileByVideoName($videoName, 'SubDb');
+        return $this->storage->createSubsFileByVideoName($videoName, $language, 'SubDb');
+    }
+
+    /**
+     * @param resource $resource
+     */
+    public function removeResource($resource)
+    {
+        unlink($resource);
     }
 }
