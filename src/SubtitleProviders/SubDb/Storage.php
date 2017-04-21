@@ -25,12 +25,4 @@ class Storage
     {
         return $this->storage->createSubsFileByVideoName($videoName, $language, 'SubDb');
     }
-
-    /**
-     * @param resource $resource
-     */
-    public function removeResource($resource)
-    {
-        unlink($resource);
-    }
 }

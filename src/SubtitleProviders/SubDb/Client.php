@@ -53,29 +53,6 @@ class Client
     }
 
     /**
-     * @return SupportedLanguages
-     */
-    public function getSupportedLanguages()
-    {
-        $query = http_build_query([
-            'action' => 'languages'
-        ]);
-        $request = $this->buildRequestWithQuery($query);
-        try {
-            $response = $this->httpClient->send($request);
-            $responseBody = $response->getBody()->getContents();
-            return SupportedLanguages::createFromLanguagesResponse($responseBody);
-        } catch (ClientException $e) {
-            if ($e->getResponse()->getStatusCode() === 404) {
-                throw new \RuntimeException('Subtitles not found');
-            }
-            throw new \RuntimeException('Error connection to SubDb');
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Error connection to SubDb');
-        }
-    }
-
-    /**
      * @param string $query
      * @return Request
      * @internal param string $hash

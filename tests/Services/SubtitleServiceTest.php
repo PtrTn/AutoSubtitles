@@ -58,4 +58,23 @@ class SubtitleServiceTest extends \PHPUnit_Framework_TestCase
         $successCount = $subtitleService->downloadSubtitlesForVideoFile($fakeVideoFile, 'en');
         $this->assertEquals(1, $successCount);
     }
+
+    public function shouldDetermineIfLanguageIsSupported()
+    {
+        $supportedLanguage = 'en';
+        $unsupportedLanguage = 'de';
+
+        /** @var SubDbProvider|Mock $subDbProvider */
+        $subDbProvider = Mockery::mock(SubDbProvider::class)
+            ->shouldIgnoreMissing();
+
+        /** @var OpenSubtitlesProvider|Mock $openSubsProvider */
+        $openSubsProvider = Mockery::mock(OpenSubtitlesProvider::class)
+            ->shouldIgnoreMissing();
+
+        $subtitleService = new SubtitleService($subDbProvider, $openSubsProvider);
+        $this->assertTrue($subtitleService->isSupportedLanguage($supportedLanguage));
+        $this->assertFalse($subtitleService->isSupportedLanguage($unsupportedLanguage));
+        $this->assertNotEmpty($subtitleService->getSupportedLanguages());
+    }
 }
