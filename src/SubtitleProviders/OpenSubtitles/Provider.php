@@ -74,10 +74,11 @@ class Provider implements SubtitleProvider
     }
 
     /**
-     * @param $videoFile
+     * @param string $videoFile
+     * @param string $language
      * @return bool
      */
-    public function downloadSubtitleForVideoFile($videoFile)
+    public function downloadSubtitleForVideoFile($videoFile, $language)
     {
         $loginSuccess = $this->client->login($this->username, $this->password, $this->useragent);
         if (!$loginSuccess) {
@@ -85,11 +86,11 @@ class Provider implements SubtitleProvider
         }
         $hash = $this->hashGenerator->generateForFilePath($videoFile);
         $fileSize = filesize($videoFile);
-        $response = $this->client->searchSubtitlesByHash($hash, $fileSize);
+        $response = $this->client->searchSubtitlesByHash($hash, $fileSize, $language);
         $collection = SubtitleCollection::fromResponse($response);
-        $subtitle = $collection->getBestMatch($videoFile);
+        $subtitle = $collection->getBestMatch($videoFile, $language);
         $url = $subtitle->SubDownloadLink;
-        $resource = $this->storage->createSubsFileByVideoName($videoFile);
+        $resource = $this->storage->createSubsFileByVideoName($videoFile, $language);
         $success = $this->downloader->downloadFromUrl($url, $resource);
         return $success;
     }

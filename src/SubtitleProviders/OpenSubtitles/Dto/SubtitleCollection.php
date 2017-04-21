@@ -51,14 +51,25 @@ class SubtitleCollection
      * @return Subtitle
      * @internal param $fileName
      */
-    public function getBestMatch($videoFile)
+    public function getBestMatch($videoFile, $language)
     {
         $fileName = pathinfo($videoFile, PATHINFO_FILENAME);
+        $this->filterByLanguage($language);
         $this->sortByRelevance($fileName);
         if (!isset($this->subtitles[0])) {
             throw new \RuntimeException('No best subtitle found');
         }
         return $this->subtitles[0];
+    }
+
+    /**
+     * @param string $language
+     */
+    private function filterByLanguage($language)
+    {
+        $this->subtitles = array_filter($this->subtitles, function (Subtitle $subtitle) use ($language) {
+            return $subtitle->ISO639 === $language;
+        });
     }
 
     /**
