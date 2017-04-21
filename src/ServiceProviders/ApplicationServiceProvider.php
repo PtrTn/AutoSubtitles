@@ -2,6 +2,7 @@
 
 namespace ServiceProviders;
 
+use Controllers\ApiController;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Services\SubtitleService;
@@ -26,6 +27,9 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                 $container[SubDbProvider::class],
                 $container[OpenSubtitlesProvider::class]
             );
+        };
+        $container[ApiController::class] = function () {
+            return new ApiController();
         };
     }
 }
