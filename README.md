@@ -30,7 +30,7 @@ After installing, subtitles can be downloaded using the following command:
 Running this command will download subtitles for the given video file. 
 Subtitles are matched based on video hash, rather than filename which proves to be more accurate.
 Subtitles are downloaded from [SubDb.com](http://thesubdb.com/) and [Opensubtitles.org](https://www.opensubtitles.org).
-Downloaded subtitle files are renamed to match the given input video file and will have a suffix indicating its source.
+Downloaded subtitle files are renamed to match the given input video file and will have a suffix indicating its source and language.
 
 # Example
 Running the following command:
