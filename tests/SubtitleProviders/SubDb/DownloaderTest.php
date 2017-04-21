@@ -2,13 +2,13 @@
 
 namespace Tests\SubtitleProviders\SubDb;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use SubtitleProviders\SubDb\Client as HttpClient;
+use SubtitleProviders\SubDb\Client;
 
 class DownloaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,7 +43,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         $handler->push($history);
         $mockClient = new HttpClient(['handler' => $handler]);
         $downloader = new Client($mockClient);
-        $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
+        $downloader->downloadSubsForHash('fake-hash', 'en', $this->tempResource);
         $this->assertCount(1, $historyContainer);
         /** @var Request $request */
         $request = $historyContainer[0]['request'];
@@ -61,7 +61,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
     {
         $mockClient = $this->createGuzzleMockForResponse(new Response(404));
         $downloader = new Client($mockClient);
-        $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
+        $downloader->downloadSubsForHash('fake-hash', 'en', $this->tempResource);
     }
 
     /**
@@ -73,7 +73,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
     {
         $mockClient = $this->createGuzzleMockForResponse(new Response(400));
         $downloader = new Client($mockClient);
-        $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
+        $downloader->downloadSubsForHash('fake-hash', 'en', $this->tempResource);
     }
 
     /**
@@ -88,17 +88,17 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         );
 
         $downloader = new Client($mockClient);
-        $downloader->downloadSubsForHash('fake-hash', $this->tempResource);
+        $downloader->downloadSubsForHash('fake-hash', 'en', $this->tempResource);
     }
 
     /**
      * @param Response $response
-     * @return Client
+     * @return HttpClient
      */
     private function createGuzzleMockForResponse(Response $response)
     {
         $mockHandler = new MockHandler([$response]);
         $handler = HandlerStack::create($mockHandler);
-        return new Client(['handler' => $handler]);
+        return new HttpClient(['handler' => $handler]);
     }
 }

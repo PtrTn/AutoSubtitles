@@ -49,7 +49,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
 
         $storage = Mockery::mock(Storage::class)
             ->shouldReceive('createSubsFileByVideoName')
-            ->with($videoFileName)
+            ->withArgs([$videoFileName, 'en'])
             ->andReturn($tmpResource)
             ->once()
             ->getMock();
@@ -70,7 +70,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
             $password,
             $useragent
         );
-        $success = $provider->downloadSubtitleForVideoFile($videoFileName);
+        $success = $provider->downloadSubtitleForVideoFile($videoFileName, 'en');
         $this->assertTrue($success);
         fclose($tmpResource);
     }
@@ -106,7 +106,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
             $password,
             $useragent
         );
-        $provider->downloadSubtitleForVideoFile($videoFileName);
+        $provider->downloadSubtitleForVideoFile($videoFileName, 'en');
     }
 
     /**

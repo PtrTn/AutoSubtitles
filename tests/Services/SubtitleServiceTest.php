@@ -25,16 +25,16 @@ class SubtitleServiceTest extends \PHPUnit_Framework_TestCase
         $subDbProvider = Mockery::mock(SubDbProvider::class);
         $subDbProvider->shouldReceive('downloadSubtitleForVideoFile')
             ->once()
-            ->with($fakeVideoFile);
+            ->withArgs([$fakeVideoFile, 'en']);
 
         /** @var OpenSubtitlesProvider|Mock $openSubsProvider */
         $openSubsProvider = Mockery::mock(OpenSubtitlesProvider::class);
         $openSubsProvider->shouldReceive('downloadSubtitleForVideoFile')
             ->once()
-            ->with($fakeVideoFile);
+            ->withArgs([$fakeVideoFile, 'en']);
 
         $subtitleService = new SubtitleService($subDbProvider, $openSubsProvider);
-        $subtitleService->downloadSubtitlesForVideoFile($fakeVideoFile);
+        $subtitleService->downloadSubtitlesForVideoFile($fakeVideoFile, 'en');
     }
 
     /**
@@ -55,7 +55,7 @@ class SubtitleServiceTest extends \PHPUnit_Framework_TestCase
             ->andReturn(false);
 
         $subtitleService = new SubtitleService($subDbProvider, $openSubsProvider);
-        $successCount = $subtitleService->downloadSubtitlesForVideoFile($fakeVideoFile);
+        $successCount = $subtitleService->downloadSubtitlesForVideoFile($fakeVideoFile, 'en');
         $this->assertEquals(1, $successCount);
     }
 }
