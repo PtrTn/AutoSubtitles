@@ -5,8 +5,9 @@ namespace SubtitleProviders;
 interface SubtitleProvider
 {
     /**
-     * @param $videoFilename
+     * @param string $videoFileName
+     * @param string $language
      * @return bool
      */
-    public function downloadSubtitleForVideoFile($videoFilename);
+    public function downloadSubtitleForVideoFile($videoFileName, $language);
 }

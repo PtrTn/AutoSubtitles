@@ -28,10 +28,10 @@ class StorageTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateSubtitleResource()
     {
         $filePath = $this->getFixturePathByName('dexter.mp4');
-        $resource = $this->storage->createSubsFileByVideoName($filePath);
+        $resource = $this->storage->createSubsFileByVideoName($filePath, 'en');
         $this->assertTrue(is_resource($resource), 'Subtitle file is not a resource');
         try {
-            $this->getFixturePathByName('dexter.OpenSubtitles.srt');
+            $this->getFixturePathByName('dexter.OpenSubtitles-EN.srt');
         } catch (\Exception $e) {
             $this->fail('Subtitle file should be created, but was not');
         }
@@ -53,13 +53,13 @@ class StorageTest extends \PHPUnit_Framework_TestCase
         $videoFile = new vfsStreamFile($videoFilePath);
         $fileSystem->addChild($videoFile);
 
-        $this->storage->createSubsFileByVideoName($videoFilePath);
+        $this->storage->createSubsFileByVideoName($videoFilePath, 'en');
     }
 
     public function tearDown()
     {
         try {
-            $filePath = $this->getFixturePathByName('dexter.OpenSubtitles.srt');
+            $filePath = $this->getFixturePathByName('dexter.OpenSubtitles-EN.srt');
             unlink($filePath);
         } catch (\Exception $e) {
         }

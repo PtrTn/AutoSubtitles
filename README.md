@@ -29,7 +29,7 @@ After installing, subtitles can be downloaded using the following command:
 
 Running this command will download subtitles for the given video file. 
 Subtitles are matched based on video hash, rather than filename which proves to be more accurate.
-Subtitles are downloaded from [SubDb.com](http://thesubdb.com/api/) and [Opensubtitles.org](https://www.opensubtitles.org).
+Subtitles are downloaded from [SubDb.com](http://thesubdb.com/) and [Opensubtitles.org](https://www.opensubtitles.org).
 Downloaded subtitle files are renamed to match the given input video file and will have a suffix indicating its source.
 
 # Example
@@ -39,8 +39,8 @@ Running the following command:
 
 Will place the following two files in the same directory
 
-- `Legion.S01E01.720p.HDTV.x264-FLEET[eztv].OpenSubtitles.srt`
-- `Legion.S01E01.720p.HDTV.x264-FLEET[eztv].SubDb.srt`
+- `Legion.S01E01.720p.HDTV.x264-FLEET[eztv].OpenSubtitles-EN.srt`
+- `Legion.S01E01.720p.HDTV.x264-FLEET[eztv].SubDb-EN.srt`
 
 Opening the video file in [VLC player](http://www.videolan.org/vlc/index.html) will automatically load the subtitle files as below
 
@@ -48,7 +48,12 @@ Opening the video file in [VLC player](http://www.videolan.org/vlc/index.html) w
 
 # Wishlist
 - Configurable languages
-- Domain specific exceptions for nicer reporting
 - Allow downloading of subtitles for multiple files at once
+- Checking for rate limits
+- Caching
+- Domain specific exceptions for nicer reporting
 - Async downloading
 - Client side application
+
+# Known bugs
+- When no subtitles are found, empty subtitle file is created

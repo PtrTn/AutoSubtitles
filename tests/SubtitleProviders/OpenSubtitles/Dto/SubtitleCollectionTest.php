@@ -16,22 +16,26 @@ class SubtitleCollectionTest extends \PHPUnit_Framework_TestCase
         $worstMatch['MovieReleaseName'] = 'this-doesnt-match-very-well';
         $mediumMatch = $this->getResponseItem();
         $mediumMatch['MovieReleaseName'] = 'this-shouldnt-match-very-well';
+        $betterMatch = $this->getResponseItem();
+        $betterMatch['MovieReleaseName'] = 'something-matches-very-well-to-this';
         $bestMatch = $this->getResponseItem();
-        $bestMatch['MovieReleaseName'] = 'something-matches-very-well-to-this';
+        $bestMatch['MovieReleaseName'] = 'something-should-match-very-well-to-this';
+        $bestMatch['ISO639'] = 'pl';
         $response = [
             'status' => '200 OK',
             'data' => [
                 $mediumMatch,
                 $worstMatch,
                 $worstMatch,
-                $bestMatch
+                $bestMatch,
+                $betterMatch
             ],
             'seconds' => 0.009
         ];
         $subtitleCollection = SubtitleCollection::fromResponse($response);
         $this->assertEquals(
             $bestMatch['IDSubMovieFile'],
-            $subtitleCollection->getBestMatch($fileName)->IDSubMovieFile
+            $subtitleCollection->getBestMatch($fileName, 'en')->IDSubMovieFile
         );
     }
 
@@ -48,7 +52,7 @@ class SubtitleCollectionTest extends \PHPUnit_Framework_TestCase
             'seconds' => 0.009
         ];
         $subtitleCollection = SubtitleCollection::fromResponse($response);
-        $subtitleCollection->getBestMatch('something');
+        $subtitleCollection->getBestMatch('something', 'en');
     }
 
     /**

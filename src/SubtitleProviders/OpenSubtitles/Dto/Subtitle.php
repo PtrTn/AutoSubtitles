@@ -251,7 +251,7 @@ class Subtitle
     public $QueryCached;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $SubTSGroupHash;
 
@@ -339,7 +339,9 @@ class Subtitle
         $subtitle->SubForeignPartsOnly = $responseItem['SubForeignPartsOnly'];
         $subtitle->SubFromTrusted = $responseItem['SubFromTrusted'];
         $subtitle->QueryCached = $responseItem['QueryCached'];
-        $subtitle->SubTSGroupHash = $responseItem['SubTSGroupHash'];
+        if (isset($responseItem['SubTSGroupHash'])) {
+            $subtitle->SubTSGroupHash = $responseItem['SubTSGroupHash'];
+        }
         $subtitle->SubDownloadLink = $responseItem['SubDownloadLink'];
         $subtitle->ZipDownloadLink = $responseItem['ZipDownloadLink'];
         $subtitle->SubtitlesLink = $responseItem['SubtitlesLink'];

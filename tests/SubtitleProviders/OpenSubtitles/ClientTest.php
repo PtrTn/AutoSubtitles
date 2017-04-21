@@ -75,7 +75,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldHandleLoginError()
     {
-        $xmlResponse = $this->getFixtureByName('fixture.xml');
+        $xmlResponse = $this->getFixtureByName('success_response.xml');
         $response = new Response(200, [], $xmlResponse);
         $client = $this->createClientFromResponse($response);
 
@@ -92,19 +92,20 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSearchSubtitlesByHash()
     {
-        $xmlResponse = $this->getFixtureByName('fixture.xml');
+        $xmlResponse = $this->getFixtureByName('success_response.xml');
         $response = new Response(200, [], $xmlResponse);
         $client = $this->createClientFromResponse($response);
 
         $hash = 'fake-hash';
         $filesize = 1234;
+        $language = 'en';
 
-        $client->searchSubtitlesByHash($hash, $filesize);
+        $client->searchSubtitlesByHash($hash, $filesize, $language);
         $lastRequestXml = $this->getLastRequestXml();
 
         $this->assertEquals('SearchSubtitles', $lastRequestXml->methodName);
         $requestParameters = $lastRequestXml->xpath('//struct/member');
-        $this->assertEquals('eng', (string)$requestParameters[0]->value->string);
+        $this->assertEquals('en', (string)$requestParameters[0]->value->string);
         $this->assertEquals($hash, (string)$requestParameters[1]->value->string);
         $this->assertEquals($filesize, (int)$requestParameters[2]->value->int);
     }
@@ -121,10 +122,33 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $hash = 'fake-hash';
         $filesize = 1234;
+        $language = 'en';
 
-        $client->searchSubtitlesByHash($hash, $filesize);
+        $client->searchSubtitlesByHash($hash, $filesize, $language);
     }
 
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage  Unable to search for subtitles on Opensubtitles, because "Unexpected status returned
+     */
+    public function shouldHandleSearchSubtitlesByHashErrorStatus()
+    {
+        $xmlResponse = $this->getFixtureByName('failed_response.xml');
+        $response = new Response(200, [], $xmlResponse);
+        $client = $this->createClientFromResponse($response);
+
+        $hash = 'fake-hash';
+        $filesize = 1234;
+        $language = 'en';
+
+        $client->searchSubtitlesByHash($hash, $filesize, $language);
+    }
+
+    /**
+     * @param Response $response
+     * @return Client
+     */
     private function createClientFromResponse($response)
     {
         $history = Middleware::history($this->historyContainer);

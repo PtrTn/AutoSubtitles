@@ -51,24 +51,30 @@ class Client
     }
 
     /**
-     * @param $hash
-     * @param $fileSize
+     * @param string $hash
+     * @param string $language
+     * @param string $fileSize
      * @return array
-     * @throws \RuntimeException
      */
-    public function searchSubtitlesByHash($hash, $fileSize)
+    public function searchSubtitlesByHash($hash, $fileSize, $language)
     {
         try {
             $response = $this->rpcClient->call('SearchSubtitles', [
                 $this->token,
                 [
                     [
-                        'sublanguageid' => 'eng',
+                        'sublanguageid' => $language,
                         'moviehash' =>  $hash,
                         'moviebytesize' => $fileSize
                     ]
                 ]
             ]);
+            if (!isset($response['status'])) {
+                throw new \RuntimeException(sprintf('Missing response status'));
+            }
+            if ($response['status'] !== '200 OK') {
+                throw new \RuntimeException(sprintf('Unexpected status returned: "%s"', $response['status']));
+            }
             return $response;
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf(

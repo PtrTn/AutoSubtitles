@@ -6,7 +6,7 @@ use ServiceProviders\ApplicationServiceProvider;
 use ServiceProviders\OpenSubtitlesServiceProvider;
 use ServiceProviders\SubDbServiceProvider;
 use Silex\Application;
-use SubtitleProviders\SubDb\Downloader;
+use SubtitleProviders\SubDb\Client;
 use SubtitleProviders\SubDb\HashGenerator;
 use SubtitleProviders\SubDb\Provider;
 use SubtitleProviders\SubDb\Storage;
@@ -25,7 +25,7 @@ class SubDbServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->bootstrapApp();
         $this->assertInstanceOf(HashGenerator::class, $this->app[HashGenerator::class]);
-        $this->assertInstanceOf(Downloader::class, $this->app[Downloader::class]);
+        $this->assertInstanceOf(Client::class, $this->app[Client::class]);
         $this->assertInstanceOf(Storage::class, $this->app[Storage::class]);
         $this->assertInstanceOf(Provider::class, $this->app[Provider::class]);
     }

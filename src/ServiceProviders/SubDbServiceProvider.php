@@ -3,11 +3,12 @@
 namespace ServiceProviders;
 
 use SubtitleProviders\GenericStorage;
-use SubtitleProviders\SubDb\Downloader;
+use SubtitleProviders\SubDb\Client;
 use SubtitleProviders\SubDb\HashGenerator;
+use SubtitleProviders\SubDb\LanguageVerifier;
 use SubtitleProviders\SubDb\Provider;
 use SubtitleProviders\SubDb\Storage;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as HttpClient;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -27,11 +28,11 @@ class SubDbServiceProvider implements ServiceProviderInterface
         $container[HashGenerator::class] = function () {
             return new HashGenerator();
         };
-        $container[Downloader::class] = function () {
-            $httpClient = new Client([
+        $container[Client::class] = function () {
+            $httpClient = new HttpClient([
                 'base_uri' => 'http://api.thesubdb.com'
             ]);
-            return new Downloader($httpClient);
+            return new Client($httpClient);
         };
         $container[Storage::class] = function () {
             return new Storage(new GenericStorage());
@@ -40,7 +41,7 @@ class SubDbServiceProvider implements ServiceProviderInterface
             return new Provider(
                 $container[HashGenerator::class],
                 $container[Storage::class],
-                $container[Downloader::class]
+                $container[Client::class]
             );
         };
     }

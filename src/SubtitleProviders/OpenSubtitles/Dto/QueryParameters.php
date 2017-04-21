@@ -21,7 +21,7 @@ class QueryParameters
     public $moviebytesize;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $sublanguageid;
 
@@ -38,7 +38,9 @@ class QueryParameters
         $queryParameters = new static();
         $queryParameters->moviehash = $QueryParameters['moviehash'];
         $queryParameters->moviebytesize = $QueryParameters['moviebytesize'];
-        $queryParameters->sublanguageid = $QueryParameters['sublanguageid'];
+        if (isset($QueryParameters['sublanguageid'])) {
+            $queryParameters->sublanguageid = $QueryParameters['sublanguageid'];
+        }
         return $queryParameters;
     }
 }

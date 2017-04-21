@@ -3,7 +3,7 @@
 namespace Tests\SubtitleProviders\SubDb;
 
 use Mockery;
-use SubtitleProviders\SubDb\Downloader;
+use SubtitleProviders\SubDb\Client;
 use SubtitleProviders\SubDb\HashGenerator;
 use SubtitleProviders\SubDb\Provider;
 use SubtitleProviders\SubDb\Storage;
@@ -23,6 +23,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         $videoFileName = 'some-video-file.mp4';
         $tmpResource = tmpfile();
         $fakeHash = 'fake-hash';
+        $language = 'en';
 
         $hashGenerator = Mockery::mock(HashGenerator::class)
             ->shouldReceive('generateForFilePath')
@@ -33,20 +34,20 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
 
         $storage = Mockery::mock(Storage::class)
             ->shouldReceive('createSubsFileByVideoName')
-            ->with($videoFileName)
+            ->withArgs([$videoFileName, $language])
             ->andReturn($tmpResource)
             ->once()
             ->getMock();
 
-        $downloader = Mockery::mock(Downloader::class)
+        $downloader = Mockery::mock(Client::class)
             ->shouldReceive('downloadSubsForHash')
-            ->withArgs([$fakeHash, $tmpResource])
+            ->withArgs([$fakeHash, $language, $tmpResource])
             ->andReturn(true)
             ->once()
             ->getMock();
 
         $provider = new Provider($hashGenerator, $storage, $downloader);
-        $success = $provider->downloadSubtitleForVideoFile($videoFileName);
+        $success = $provider->downloadSubtitleForVideoFile($videoFileName, $language);
         $this->assertTrue($success);
         fclose($tmpResource);
     }
